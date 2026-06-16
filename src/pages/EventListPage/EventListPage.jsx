@@ -126,7 +126,7 @@ function EventListPage() {
         <Box sx={{ px: 2, pt: 2 }}>
           <Grid container spacing={1.5}>
             {filtered.map((event) => (
-              <Grid item xs={6} key={event.id}>
+              <Grid size={6} key={event.id}>
                 <EventCard event={event} />
               </Grid>
             ))}

@@ -205,7 +205,7 @@ function HomePage() {
             </Box>
             <Grid container spacing={1.5}>
               {latestEvents.map((event) => (
-                <Grid item xs={6} key={event.id}>
+                <Grid size={6} key={event.id}>
                   <EventCard event={event} />
                 </Grid>
               ))}

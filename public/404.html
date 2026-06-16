@@ -1,0 +1,17 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>ANISPOT</title>
+  <script>
+    // GitHub Pages SPA 라우팅 - 404를 index.html로 리디렉션
+    const path = window.location.pathname;
+    const base = '/anispot';
+    if (path.startsWith(base)) {
+      sessionStorage.setItem('redirect', path);
+    }
+    window.location.replace(base + '/');
+  </script>
+</head>
+<body></body>
+</html>

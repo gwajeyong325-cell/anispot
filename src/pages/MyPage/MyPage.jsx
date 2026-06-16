@@ -131,7 +131,7 @@ function MyPage() {
             ) : (
               <Grid container spacing={1.5}>
                 {favorites.map((event) => (
-                  <Grid item xs={6} key={event.id}>
+                  <Grid size={6} key={event.id}>
                     <EventCard event={event} isFavorited={true} />
                   </Grid>
                 ))}
@@ -158,7 +158,7 @@ function MyPage() {
               ) : (
                 <Grid container spacing={1.5}>
                   {myEvents.map((event) => (
-                    <Grid item xs={6} key={event.id}>
+                    <Grid size={6} key={event.id}>
                       <EventCard event={event} />
                     </Grid>
                   ))}
