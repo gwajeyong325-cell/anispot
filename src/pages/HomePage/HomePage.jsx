@@ -9,7 +9,6 @@ import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import WhatshotIcon from '@mui/icons-material/Whatshot';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { supabase } from '../../supabase';
-import BottomNav from '../../components/BottomNav/BottomNav';
 import EventCard from '../../components/EventCard/EventCard';
 
 const CATEGORIES = ['전체', '애니메이션', '게임', '버튜버', '전시회', '콜라보 카페', '굿즈샵'];
@@ -216,7 +215,6 @@ function HomePage() {
         </Box>
       )}
 
-      <BottomNav />
 
       {/* FAB: 행사 등록 */}
       <Box

@@ -7,7 +7,6 @@ import SearchIcon from '@mui/icons-material/Search';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../supabase';
-import BottomNav from '../../components/BottomNav/BottomNav';
 import EventCard from '../../components/EventCard/EventCard';
 
 const CATEGORIES = ['전체', '애니메이션', '게임', '버튜버', '전시회', '콜라보 카페', '굿즈샵'];
@@ -145,7 +144,6 @@ function EventListPage() {
         </Box>
       )}
 
-      <BottomNav />
     </Box>
   );
 }

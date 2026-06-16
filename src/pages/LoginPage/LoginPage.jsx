@@ -97,6 +97,7 @@ function LoginPage() {
           bgcolor: 'rgba(26,26,26,0.95)',
           borderRadius: '20px 20px 0 0',
           p: 3,
+          pb: 'calc(80px + env(safe-area-inset-bottom) + 16px)',
           backdropFilter: 'blur(10px)',
         }}
       >

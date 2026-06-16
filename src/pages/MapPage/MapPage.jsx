@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { Box, Typography, Chip, CircularProgress } from '@mui/material';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { supabase } from '../../supabase';
-import BottomNav from '../../components/BottomNav/BottomNav';
 import StatusBadge from '../../components/StatusBadge/StatusBadge';
 
 const REGIONS = ['전체', '서울', '경기', '인천', '부산', '대구', '기타'];
@@ -115,7 +114,6 @@ function MapPage() {
         </Box>
       )}
 
-      <BottomNav />
     </Box>
   );
 }

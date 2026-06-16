@@ -8,7 +8,6 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import AddIcon from '@mui/icons-material/Add';
 import { supabase } from '../../supabase';
 import { useAuth } from '../../AuthContext';
-import BottomNav from '../../components/BottomNav/BottomNav';
 import EventCard from '../../components/EventCard/EventCard';
 
 function MyPage() {
@@ -205,7 +204,6 @@ function MyPage() {
         </Box>
       )}
 
-      <BottomNav />
     </Box>
   );
 }

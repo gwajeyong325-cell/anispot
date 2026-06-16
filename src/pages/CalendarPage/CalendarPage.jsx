@@ -6,7 +6,6 @@ import {
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { supabase } from '../../supabase';
-import BottomNav from '../../components/BottomNav/BottomNav';
 import StatusBadge from '../../components/StatusBadge/StatusBadge';
 
 const WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토'];
@@ -221,7 +220,6 @@ function CalendarPage() {
         </>
       )}
 
-      <BottomNav />
     </Box>
   );
 }
