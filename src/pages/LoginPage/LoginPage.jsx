@@ -191,47 +191,28 @@ function LoginPage() {
           Google로 계속하기
         </Button>
 
-        {/* 데모 체험 */}
-        <Box
+        <Button
+          variant="outlined"
+          fullWidth
+          startIcon={loading ? null : <PlayArrowIcon sx={{ color: '#FFD93D' }} />}
+          onClick={handleDemo}
+          disabled={loading}
           sx={{
-            mt: 2,
-            p: 2,
-            border: '1px dashed rgba(255,215,61,0.35)',
-            borderRadius: 2,
-            bgcolor: 'rgba(255,215,61,0.04)',
+            mt: 1.5,
+            py: 1.5,
+            color: '#FFD93D',
+            borderColor: 'rgba(255,215,61,0.4)',
+            '&:hover': { borderColor: '#FFD93D', bgcolor: 'rgba(255,215,61,0.06)' },
+            '&.Mui-disabled': { borderColor: 'rgba(255,215,61,0.15)', color: 'rgba(255,215,61,0.3)' },
           }}
         >
-          <Button
-            variant="contained"
-            fullWidth
-            startIcon={loading ? null : <PlayArrowIcon />}
-            onClick={handleDemo}
-            disabled={loading}
-            sx={{
-              py: 1.4,
-              mb: 1.25,
-              background: 'linear-gradient(135deg, #FFD93D 0%, #F0B800 100%)',
-              color: '#111',
-              fontWeight: 800,
-              fontSize: '0.95rem',
-              '&:hover': { background: 'linear-gradient(135deg, #FFE566 0%, #FFD93D 100%)' },
-              '&.Mui-disabled': { bgcolor: 'rgba(255,215,61,0.3)', color: 'rgba(0,0,0,0.4)' },
-            }}
-          >
-            {loading ? <CircularProgress size={22} sx={{ color: '#111' }} /> : '데모 계정으로 체험하기'}
-          </Button>
-          <Typography
-            sx={{
-              fontSize: '0.72rem',
-              color: 'rgba(255,255,255,0.4)',
-              textAlign: 'center',
-              lineHeight: 1.6,
-            }}
-          >
-            로그인 없이 모든 기능을 체험할 수 있어요.{'\n'}
-            데모 계정의 데이터는 공유되며 초기화될 수 있습니다.
-          </Typography>
-        </Box>
+          {loading ? <CircularProgress size={22} sx={{ color: '#FFD93D' }} /> : '데모 계정 사용하기'}
+        </Button>
+        <Typography
+          sx={{ mt: 1, fontSize: '0.7rem', color: 'rgba(255,255,255,0.3)', textAlign: 'center' }}
+        >
+          별도 가입 없이 모든 기능을 체험할 수 있어요 · 데이터는 공유됩니다
+        </Typography>
       </Box>
     </Box>
   );
