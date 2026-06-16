@@ -1,0 +1,35 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  font-family: 'Roboto', 'Noto Sans KR', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #0D0D0D;
+  min-height: 100vh;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+* {
+  scrollbar-width: none;
+}
