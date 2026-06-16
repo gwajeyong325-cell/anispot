@@ -9,26 +9,28 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* 바깥 영역 배경 (데스크탑에서 앱 옆 공간) */
 html {
-  background-color: #111111;
+  background-color: #111111 !important;
+  min-height: 100dvh;
 }
 
 body {
-  margin: 0 auto;
+  margin: 0 !important;
   padding: 0;
-  background-color: #0D0D0D;
-  min-height: 100vh;
   min-height: 100dvh;
-  max-width: 480px;
-  position: relative;
-  overflow-x: hidden;
+  background-color: #111111 !important;
 }
 
+/* 앱 컨테이너: 480px 중앙 정렬 — 센터링 핵심 */
 #root {
-  min-height: 100vh;
+  max-width: 480px;
+  width: 100%;
   min-height: 100dvh;
-  display: flex;
-  flex-direction: column;
+  margin: 0 auto;
+  background-color: #0D0D0D;
+  position: relative;
+  /* overflow-x: hidden 제거 — sticky 헤더 깨짐 방지 */
 }
 
 a {
@@ -40,19 +42,17 @@ a {
 ::-webkit-scrollbar { display: none; }
 * { scrollbar-width: none; }
 
-/* 모바일 safe area 유틸 클래스 */
-.safe-pb {
-  padding-bottom: calc(64px + env(safe-area-inset-bottom));
-}
-
 /* MUI Select 다크모드 팝업 */
 .MuiMenu-paper {
-  background-color: #222 !important;
-  color: #fff !important;
+  background-color: #1E1E1E !important;
+  color: rgba(255,255,255,0.87) !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
 }
 .MuiMenuItem-root {
   color: rgba(255,255,255,0.87) !important;
+  font-size: 0.875rem !important;
 }
-.MuiMenuItem-root:hover {
+.MuiMenuItem-root:hover,
+.MuiMenuItem-root.Mui-selected {
   background-color: rgba(255,255,255,0.08) !important;
 }
