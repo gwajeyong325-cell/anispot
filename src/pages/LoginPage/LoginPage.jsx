@@ -52,12 +52,22 @@ function LoginPage() {
 
   const handleDemo = async () => {
     setLoading(true); setError('');
-    const { error } = await supabase.auth.signInWithPassword({
-      email: DEMO_EMAIL,
-      password: DEMO_PASSWORD,
-    });
-    if (error) setError('데모 로그인에 실패했습니다. 잠시 후 다시 시도해주세요.');
-    else navigate('/');
+    try {
+      // Edge Function으로 데모 계정 생성 보장 (admin API 사용)
+      await fetch(
+        'https://vkzvhyazpkbxujrqsdpe.supabase.co/functions/v1/create-demo-user',
+        { method: 'POST', headers: { 'Content-Type': 'application/json' } }
+      );
+      // 데모 계정으로 로그인
+      const { error } = await supabase.auth.signInWithPassword({
+        email: DEMO_EMAIL,
+        password: DEMO_PASSWORD,
+      });
+      if (error) throw error;
+      navigate('/');
+    } catch {
+      setError('데모 로그인에 실패했습니다. 잠시 후 다시 시도해주세요.');
+    }
     setLoading(false);
   };
 
