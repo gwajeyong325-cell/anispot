@@ -13,7 +13,7 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { supabase } from '../../supabase';
 import { useAuth } from '../../AuthContext';
 import StatusBadge from '../../components/StatusBadge/StatusBadge';
@@ -255,7 +255,7 @@ function EventDetailPage() {
             <Button
               variant="outlined"
               fullWidth
-              startIcon={<DeleteOutlineIcon />}
+              startIcon={<DeleteIcon />}
               onClick={() => setDeleteOpen(true)}
               sx={{
                 height: 48,
