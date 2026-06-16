@@ -44,83 +44,94 @@ function EventListPage() {
     ? events.filter(e => e.title.toLowerCase().includes(search.toLowerCase()) || e.venue?.toLowerCase().includes(search.toLowerCase()))
     : events;
 
+  const selectSx = {
+    color: 'rgba(255,255,255,0.8)',
+    fontSize: '0.78rem',
+    bgcolor: 'rgba(255,255,255,0.06)',
+    height: 36,
+    '.MuiOutlinedInput-notchedOutline': { borderColor: 'rgba(255,255,255,0.12)' },
+    '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: 'rgba(255,255,255,0.3)' },
+    '.MuiSvgIcon-root': { color: 'rgba(255,255,255,0.5)' },
+  };
+
   return (
-    <Box sx={{ bgcolor: 'background.default', minHeight: '100vh', pb: 10 }}>
+    <Box sx={{ bgcolor: 'background.default', minHeight: '100dvh', pb: '80px' }}>
       {/* 헤더 */}
-      <Box sx={{ position: 'sticky', top: 0, zIndex: 100, bgcolor: '#0D0D0D', px: 2, pt: 2, pb: 1, borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5, gap: 1 }}>
-          <IconButton onClick={() => navigate(-1)} sx={{ color: 'text.secondary', p: 0.5 }}>
+      <Box sx={{
+        position: 'sticky', top: 0, zIndex: 100,
+        bgcolor: 'rgba(13,13,13,0.97)', backdropFilter: 'blur(12px)',
+        borderBottom: '1px solid rgba(255,255,255,0.06)',
+      }}>
+        {/* 타이틀 행 */}
+        <Box sx={{ display: 'flex', alignItems: 'center', px: 1, pt: 'max(env(safe-area-inset-top), 8px)', height: 52, gap: 0.5 }}>
+          <IconButton onClick={() => navigate(-1)} sx={{ color: 'rgba(255,255,255,0.7)', minWidth: 44, minHeight: 44 }}>
             <ArrowBackIcon />
           </IconButton>
-          <Typography variant="h3" sx={{ color: '#fff', fontWeight: 800 }}>행사 탐색</Typography>
+          <Typography sx={{ color: '#fff', fontWeight: 800, fontSize: '1.05rem' }}>행사 탐색</Typography>
         </Box>
 
         {/* 검색창 */}
-        <Box sx={{ display: 'flex', alignItems: 'center', bgcolor: '#1A1A1A', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 2, px: 1.5, py: 0.75, mb: 1.5 }}>
-          <SearchIcon sx={{ color: 'text.secondary', mr: 1, fontSize: '1.1rem' }} />
-          <InputBase
-            placeholder="행사명, 장소 검색..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            sx={{ flex: 1, color: '#fff', fontSize: '0.9rem' }}
-          />
+        <Box sx={{ px: 2, pb: 1 }}>
+          <Box sx={{
+            display: 'flex', alignItems: 'center',
+            bgcolor: '#1E1E1E', border: '1px solid rgba(255,255,255,0.08)',
+            borderRadius: '10px', px: 1.5, height: 44,
+          }}>
+            <SearchIcon sx={{ color: 'rgba(255,255,255,0.4)', mr: 1, fontSize: '1.1rem', flexShrink: 0 }} />
+            <InputBase
+              placeholder="행사명, 장소 검색..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              sx={{ flex: 1, color: '#fff', fontSize: '0.9rem' }}
+            />
+          </Box>
         </Box>
 
-        {/* 카테고리 */}
-        <Box sx={{ display: 'flex', gap: 1, overflowX: 'auto', pb: 0.5, mb: 1, '&::-webkit-scrollbar': { display: 'none' } }}>
+        {/* 카테고리 칩 */}
+        <Box sx={{ display: 'flex', gap: 0.75, overflowX: 'auto', px: 2, pb: 1 }}>
           {CATEGORIES.map((cat) => (
             <Chip
               key={cat}
               label={cat}
               onClick={() => setCategory(cat)}
-              size="small"
               sx={{
-                bgcolor: category === cat ? 'primary.main' : 'rgba(255,255,255,0.07)',
-                color: category === cat ? '#fff' : 'text.secondary',
-                fontWeight: 600,
-                flexShrink: 0,
+                height: 32, flexShrink: 0, borderRadius: '8px', fontSize: '0.75rem', fontWeight: 700,
+                bgcolor: category === cat ? 'primary.main' : 'rgba(255,255,255,0.06)',
+                color: category === cat ? '#fff' : 'rgba(255,255,255,0.6)',
                 border: category === cat ? 'none' : '1px solid rgba(255,255,255,0.1)',
               }}
             />
           ))}
         </Box>
 
-        {/* 지역 + 정렬 */}
-        <Box sx={{ display: 'flex', gap: 1 }}>
-          <FormControl size="small" sx={{ minWidth: 80 }}>
-            <Select
-              value={region}
-              onChange={(e) => setRegion(e.target.value)}
-              sx={{ color: 'text.secondary', fontSize: '0.75rem', bgcolor: '#1A1A1A', '.MuiOutlinedInput-notchedOutline': { borderColor: 'rgba(255,255,255,0.1)' } }}
-            >
-              {REGIONS.map(r => <MenuItem key={r} value={r} sx={{ fontSize: '0.8rem' }}>{r}</MenuItem>)}
+        {/* 지역 + 정렬 + 결과수 */}
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, px: 2, pb: 1.5 }}>
+          <FormControl size="small">
+            <Select value={region} onChange={(e) => setRegion(e.target.value)} sx={selectSx}>
+              {REGIONS.map(r => <MenuItem key={r} value={r} sx={{ fontSize: '0.82rem', color: 'rgba(255,255,255,0.87)' }}>{r}</MenuItem>)}
             </Select>
           </FormControl>
-          <FormControl size="small" sx={{ minWidth: 90 }}>
-            <Select
-              value={sort}
-              onChange={(e) => setSort(e.target.value)}
-              sx={{ color: 'text.secondary', fontSize: '0.75rem', bgcolor: '#1A1A1A', '.MuiOutlinedInput-notchedOutline': { borderColor: 'rgba(255,255,255,0.1)' } }}
-            >
-              <MenuItem value="latest" sx={{ fontSize: '0.8rem' }}>최신순</MenuItem>
-              <MenuItem value="popular" sx={{ fontSize: '0.8rem' }}>인기순</MenuItem>
-              <MenuItem value="start_date" sx={{ fontSize: '0.8rem' }}>날짜순</MenuItem>
+          <FormControl size="small">
+            <Select value={sort} onChange={(e) => setSort(e.target.value)} sx={selectSx}>
+              <MenuItem value="latest" sx={{ fontSize: '0.82rem', color: 'rgba(255,255,255,0.87)' }}>최신순</MenuItem>
+              <MenuItem value="popular" sx={{ fontSize: '0.82rem', color: 'rgba(255,255,255,0.87)' }}>인기순</MenuItem>
+              <MenuItem value="start_date" sx={{ fontSize: '0.82rem', color: 'rgba(255,255,255,0.87)' }}>날짜순</MenuItem>
             </Select>
           </FormControl>
-          <Typography variant="caption" sx={{ color: 'text.secondary', alignSelf: 'center', ml: 'auto' }}>
+          <Typography sx={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.78rem', ml: 'auto' }}>
             {filtered.length}개
           </Typography>
         </Box>
       </Box>
 
       {loading ? (
-        <Box sx={{ display: 'flex', justifyContent: 'center', pt: 8 }}>
-          <CircularProgress color="primary" />
+        <Box sx={{ display: 'flex', justifyContent: 'center', pt: 10 }}>
+          <CircularProgress color="primary" size={36} />
         </Box>
       ) : filtered.length === 0 ? (
         <Box sx={{ textAlign: 'center', pt: 10 }}>
-          <Typography variant="h3" sx={{ color: 'text.secondary' }}>검색 결과가 없어요</Typography>
-          <Typography variant="body2" sx={{ color: 'text.secondary', mt: 1 }}>다른 키워드로 검색해보세요</Typography>
+          <Typography sx={{ color: 'rgba(255,255,255,0.5)', fontSize: '1rem' }}>검색 결과가 없어요</Typography>
+          <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.3)', mt: 1 }}>다른 키워드로 검색해보세요</Typography>
         </Box>
       ) : (
         <Box sx={{ px: 2, pt: 2 }}>

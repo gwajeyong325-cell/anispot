@@ -93,12 +93,12 @@ function EventDetailPage() {
   };
 
   if (loading) return (
-    <Box sx={{ bgcolor: 'background.default', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+    <Box sx={{ bgcolor: 'background.default', minHeight: '100dvh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <CircularProgress color="primary" />
     </Box>
   );
   if (!event) return (
-    <Box sx={{ bgcolor: 'background.default', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+    <Box sx={{ bgcolor: 'background.default', minHeight: '100dvh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <Typography color="text.secondary">행사를 찾을 수 없습니다.</Typography>
     </Box>
   );
@@ -106,65 +106,71 @@ function EventDetailPage() {
   const categoryColors = { '애니메이션': '#E84040', '게임': '#7B2FBE', '버튜버': '#FF7EB3', '전시회': '#0288d1', '콜라보 카페': '#F57C00', '굿즈샵': '#2e7d32' };
 
   return (
-    <Box sx={{ bgcolor: 'background.default', minHeight: '100vh', pb: 4 }}>
-      {/* 포스터 */}
-      <Box sx={{ position: 'relative', height: 420 }}>
+    <Box sx={{ bgcolor: 'background.default', minHeight: '100dvh', pb: 5 }}>
+      {/* 포스터 - 화면 비율 기반 높이 */}
+      <Box sx={{ position: 'relative', height: 'min(65vw, 320px)' }}>
         <Box
           component="img"
           src={event.poster_url || `https://picsum.photos/seed/${event.id}/400/600`}
           alt={event.title}
-          sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          sx={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }}
         />
-        <Box sx={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, transparent 30%, rgba(13,13,13,0.95) 85%, #0D0D0D 100%)' }} />
+        <Box sx={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, transparent 25%, rgba(13,13,13,0.9) 80%, #0D0D0D 100%)' }} />
 
-        {/* 상단 버튼 */}
-        <Box sx={{ position: 'absolute', top: 0, left: 0, right: 0, display: 'flex', justifyContent: 'space-between', p: 1.5 }}>
-          <IconButton onClick={() => navigate(-1)} sx={{ bgcolor: 'rgba(0,0,0,0.5)', color: '#fff', backdropFilter: 'blur(4px)' }}>
+        {/* 상단 버튼 — safe area 적용 */}
+        <Box sx={{
+          position: 'absolute', top: 0, left: 0, right: 0,
+          display: 'flex', justifyContent: 'space-between',
+          pt: 'max(env(safe-area-inset-top), 8px)', px: 1,
+        }}>
+          <IconButton onClick={() => navigate(-1)} sx={{ bgcolor: 'rgba(0,0,0,0.55)', color: '#fff', backdropFilter: 'blur(6px)', minWidth: 44, minHeight: 44 }}>
             <ArrowBackIcon />
           </IconButton>
-          <Box sx={{ display: 'flex', gap: 1 }}>
-            <IconButton onClick={handleShare} sx={{ bgcolor: 'rgba(0,0,0,0.5)', color: '#fff', backdropFilter: 'blur(4px)' }}>
+          <Box sx={{ display: 'flex', gap: 0.5 }}>
+            <IconButton onClick={handleShare} sx={{ bgcolor: 'rgba(0,0,0,0.55)', color: '#fff', backdropFilter: 'blur(6px)', minWidth: 44, minHeight: 44 }}>
               <ShareIcon />
             </IconButton>
-            <IconButton onClick={handleFavorite} sx={{ bgcolor: 'rgba(0,0,0,0.5)', color: favorited ? '#FFD93D' : '#fff', backdropFilter: 'blur(4px)' }}>
+            <IconButton onClick={handleFavorite} sx={{ bgcolor: 'rgba(0,0,0,0.55)', color: favorited ? '#FFD93D' : '#fff', backdropFilter: 'blur(6px)', minWidth: 44, minHeight: 44 }}>
               {favorited ? <BookmarkIcon /> : <BookmarkBorderIcon />}
             </IconButton>
           </Box>
         </Box>
       </Box>
 
-      <Box sx={{ px: 2, mt: -2 }}>
+      <Box sx={{ px: 2, mt: -1.5 }}>
         {/* 카테고리 + 상태 */}
-        <Box sx={{ display: 'flex', gap: 1, mb: 1 }}>
-          <Chip label={event.category} size="small" sx={{ bgcolor: categoryColors[event.category] || '#E84040', color: '#fff', fontWeight: 700, borderRadius: 1, fontSize: '0.7rem' }} />
+        <Box sx={{ display: 'flex', gap: 0.75, mb: 1, flexWrap: 'wrap' }}>
+          <Chip label={event.category} size="small" sx={{ bgcolor: categoryColors[event.category] || '#E84040', color: '#fff', fontWeight: 700, borderRadius: 1, fontSize: '0.72rem', height: 24 }} />
           <StatusBadge startDate={event.start_date} endDate={event.end_date} />
         </Box>
 
-        <Typography variant="h2" sx={{ color: '#fff', fontWeight: 800, mb: 1 }}>{event.title}</Typography>
+        <Typography sx={{ color: '#fff', fontWeight: 800, fontSize: '1.3rem', lineHeight: 1.3, mb: 1.5 }}>{event.title}</Typography>
 
-        {/* 기본 정보 */}
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, mb: 2 }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <CalendarTodayIcon sx={{ color: 'primary.main', fontSize: '1rem' }} />
-            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              {new Date(event.start_date).toLocaleDateString('ko-KR')} ~ {new Date(event.end_date).toLocaleDateString('ko-KR')}
-            </Typography>
-          </Box>
-          {event.operating_hours && (
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              <AccessTimeIcon sx={{ color: 'primary.main', fontSize: '1rem' }} />
-              <Typography variant="body2" sx={{ color: 'text.secondary' }}>{event.operating_hours}</Typography>
+        {/* 기본 정보 카드 */}
+        <Box sx={{ bgcolor: '#161616', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 2, p: 2, mb: 2 }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.25 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.25 }}>
+              <CalendarTodayIcon sx={{ color: 'primary.main', fontSize: '1rem', flexShrink: 0 }} />
+              <Typography sx={{ color: 'rgba(255,255,255,0.85)', fontSize: '0.875rem' }}>
+                {new Date(event.start_date).toLocaleDateString('ko-KR')} ~ {new Date(event.end_date).toLocaleDateString('ko-KR')}
+              </Typography>
             </Box>
-          )}
-          {event.venue && (
-            <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1 }}>
-              <LocationOnIcon sx={{ color: 'primary.main', fontSize: '1rem', mt: 0.2 }} />
-              <Box>
-                <Typography variant="body2" sx={{ color: '#fff', fontWeight: 600 }}>{event.venue}</Typography>
-                {event.address && <Typography variant="caption" sx={{ color: 'text.secondary' }}>{event.address}</Typography>}
+            {event.operating_hours && (
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.25 }}>
+                <AccessTimeIcon sx={{ color: 'primary.main', fontSize: '1rem', flexShrink: 0 }} />
+                <Typography sx={{ color: 'rgba(255,255,255,0.85)', fontSize: '0.875rem' }}>{event.operating_hours}</Typography>
               </Box>
-            </Box>
-          )}
+            )}
+            {event.venue && (
+              <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1.25 }}>
+                <LocationOnIcon sx={{ color: 'primary.main', fontSize: '1rem', flexShrink: 0, mt: 0.15 }} />
+                <Box>
+                  <Typography sx={{ color: '#fff', fontWeight: 600, fontSize: '0.875rem' }}>{event.venue}</Typography>
+                  {event.address && <Typography sx={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.78rem', mt: 0.25 }}>{event.address}</Typography>}
+                </Box>
+              </Box>
+            )}
+          </Box>
         </Box>
 
         {/* 지도/길찾기 버튼 */}
@@ -174,7 +180,7 @@ function EventDetailPage() {
             fullWidth
             startIcon={<LocationOnIcon />}
             onClick={() => window.open(`https://map.kakao.com/?q=${encodeURIComponent(event.address)}`, '_blank')}
-            sx={{ mb: 2, borderColor: 'rgba(255,255,255,0.2)', color: '#fff', '&:hover': { borderColor: 'primary.main' } }}
+            sx={{ mb: 2, height: 48, borderColor: 'rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.8)', '&:hover': { borderColor: 'primary.main', color: 'primary.main' } }}
           >
             카카오맵으로 길찾기
           </Button>

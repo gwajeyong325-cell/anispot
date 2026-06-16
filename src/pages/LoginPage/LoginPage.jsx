@@ -49,7 +49,7 @@ function LoginPage() {
   return (
     <Box
       sx={{
-        minHeight: '100vh',
+        minHeight: '100dvh',
         bgcolor: 'background.default',
         display: 'flex',
         flexDirection: 'column',
@@ -70,7 +70,7 @@ function LoginPage() {
       />
 
       {/* 헤더 로고 */}
-      <Box sx={{ position: 'relative', zIndex: 1, pt: 8, pb: 4, textAlign: 'center' }}>
+      <Box sx={{ position: 'relative', zIndex: 1, pt: 'max(env(safe-area-inset-top), 48px)', pb: 3, textAlign: 'center' }}>
         <Typography
           variant="h1"
           sx={{

@@ -64,11 +64,11 @@ function CalendarPage() {
   };
 
   return (
-    <Box sx={{ bgcolor: 'background.default', minHeight: '100vh', pb: 10 }}>
+    <Box sx={{ bgcolor: 'background.default', minHeight: '100dvh', pb: '80px' }}>
       {/* 헤더 */}
-      <Box sx={{ px: 2, pt: 2, pb: 1, borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-        <Typography variant="h3" sx={{ color: '#fff', fontWeight: 800, mb: 0.5 }}>행사 캘린더</Typography>
-        <Typography variant="caption" sx={{ color: 'text.secondary' }}>발매 예정표 스타일로 행사 일정을 확인하세요</Typography>
+      <Box sx={{ px: 2, pt: 'max(env(safe-area-inset-top), 16px)', pb: 1.5, borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+        <Typography sx={{ color: '#fff', fontWeight: 800, fontSize: '1.1rem', mb: 0.25 }}>행사 캘린더</Typography>
+        <Typography sx={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.78rem' }}>발매 예정표 스타일로 행사 일정을 확인하세요</Typography>
       </Box>
 
       {/* 월 선택 */}

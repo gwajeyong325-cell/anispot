@@ -49,33 +49,27 @@ function HomePage() {
   const latestEvents = events.slice(0, 6);
 
   return (
-    <Box sx={{ bgcolor: 'background.default', minHeight: '100vh', pb: 10 }}>
+    <Box sx={{ bgcolor: 'background.default', minHeight: '100dvh', pb: '80px' }}>
       {/* 헤더 */}
       <Box
         sx={{
           position: 'sticky',
           top: 0,
           zIndex: 100,
-          bgcolor: '#0D0D0D',
+          bgcolor: 'rgba(13,13,13,0.97)',
+          backdropFilter: 'blur(12px)',
           px: 2,
-          pt: 2,
-          pb: 1,
+          pt: 'max(env(safe-area-inset-top), 12px)',
+          pb: 0,
           borderBottom: '1px solid rgba(255,255,255,0.06)',
         }}
       >
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1.5 }}>
-          <Typography
-            variant="h2"
-            sx={{
-              color: 'primary.main',
-              fontWeight: 900,
-              fontSize: '1.6rem',
-              letterSpacing: '0.04em',
-            }}
-          >
+        {/* 로고 + 알림 */}
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 48 }}>
+          <Typography sx={{ color: 'primary.main', fontWeight: 900, fontSize: '1.5rem', letterSpacing: '0.06em' }}>
             ANISPOT
           </Typography>
-          <IconButton sx={{ color: 'text.secondary' }}>
+          <IconButton sx={{ color: 'text.secondary', p: 1, minWidth: 44, minHeight: 44 }}>
             <NotificationsNoneIcon />
           </IconButton>
         </Box>
@@ -86,36 +80,39 @@ function HomePage() {
           sx={{
             display: 'flex',
             alignItems: 'center',
-            bgcolor: '#1A1A1A',
-            border: '1px solid rgba(255,255,255,0.1)',
-            borderRadius: 2,
+            bgcolor: '#1E1E1E',
+            border: '1px solid rgba(255,255,255,0.08)',
+            borderRadius: '10px',
             px: 1.5,
-            py: 0.75,
+            height: 44,
             cursor: 'pointer',
             mb: 1.5,
+            mt: 1,
           }}
         >
-          <SearchIcon sx={{ color: 'text.secondary', mr: 1, fontSize: '1.1rem' }} />
-          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+          <SearchIcon sx={{ color: 'rgba(255,255,255,0.4)', mr: 1, fontSize: '1.1rem' }} />
+          <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.875rem' }}>
             행사, 팝업, 카페 검색...
           </Typography>
         </Box>
 
         {/* 카테고리 필터 */}
-        <Box sx={{ display: 'flex', gap: 1, overflowX: 'auto', pb: 0.5, '&::-webkit-scrollbar': { display: 'none' } }}>
+        <Box sx={{ display: 'flex', gap: 0.75, overflowX: 'auto', pb: 1.5, mx: -2, px: 2 }}>
           {CATEGORIES.map((cat) => (
             <Chip
               key={cat}
               label={cat}
               onClick={() => setCategory(cat)}
-              size="small"
               sx={{
-                bgcolor: category === cat ? 'primary.main' : 'rgba(255,255,255,0.07)',
-                color: category === cat ? '#fff' : 'text.secondary',
-                fontWeight: 600,
+                height: 32,
+                bgcolor: category === cat ? 'primary.main' : 'rgba(255,255,255,0.06)',
+                color: category === cat ? '#fff' : 'rgba(255,255,255,0.6)',
+                fontWeight: 700,
+                fontSize: '0.75rem',
                 flexShrink: 0,
                 border: category === cat ? 'none' : '1px solid rgba(255,255,255,0.1)',
-                '&:hover': { bgcolor: category === cat ? 'primary.dark' : 'rgba(255,255,255,0.12)' },
+                borderRadius: '8px',
+                '&:hover': { bgcolor: category === cat ? 'primary.dark' : 'rgba(255,255,255,0.1)' },
               }}
             />
           ))}
@@ -123,66 +120,70 @@ function HomePage() {
       </Box>
 
       {loading ? (
-        <Box sx={{ display: 'flex', justifyContent: 'center', pt: 8 }}>
-          <CircularProgress color="primary" />
+        <Box sx={{ display: 'flex', justifyContent: 'center', pt: 10 }}>
+          <CircularProgress color="primary" size={36} />
         </Box>
       ) : (
-        <Box sx={{ px: 2 }}>
+        <Box>
           {/* 종료 임박 배너 */}
           {todayEndingEvents.length > 0 && (
-            <Box
-              sx={{
-                mt: 2,
-                p: 2,
-                bgcolor: 'rgba(232,64,64,0.12)',
-                border: '1px solid rgba(232,64,64,0.3)',
-                borderRadius: 2,
-              }}
-            >
-              <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                <AccessTimeIcon sx={{ color: 'primary.main', fontSize: '1rem', mr: 0.5 }} />
-                <Typography variant="body2" sx={{ color: 'primary.main', fontWeight: 700 }}>
-                  곧 종료되는 행사
-                </Typography>
-              </Box>
-              <Box sx={{ display: 'flex', gap: 1, overflowX: 'auto', '&::-webkit-scrollbar': { display: 'none' } }}>
-                {todayEndingEvents.map((event) => (
-                  <Box
-                    key={event.id}
-                    onClick={() => navigate(`/events/${event.id}`)}
-                    sx={{
-                      flexShrink: 0,
-                      width: 140,
-                      p: 1,
-                      bgcolor: '#1A1A1A',
-                      borderRadius: 1.5,
-                      cursor: 'pointer',
-                      border: '1px solid rgba(255,255,255,0.08)',
-                    }}
-                  >
-                    <Typography sx={{ fontSize: '0.75rem', fontWeight: 700, color: '#fff' }} noWrap>
-                      {event.title}
-                    </Typography>
-                    <Typography sx={{ fontSize: '0.65rem', color: 'text.secondary' }}>
-                      {new Date(event.end_date).toLocaleDateString('ko-KR')} 종료
-                    </Typography>
-                  </Box>
-                ))}
+            <Box sx={{ px: 2, pt: 2 }}>
+              <Box
+                sx={{
+                  p: 1.5,
+                  bgcolor: 'rgba(232,64,64,0.1)',
+                  border: '1px solid rgba(232,64,64,0.25)',
+                  borderRadius: 2,
+                }}
+              >
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                  <AccessTimeIcon sx={{ color: 'primary.main', fontSize: '0.9rem', mr: 0.5 }} />
+                  <Typography sx={{ fontSize: '0.8rem', color: 'primary.main', fontWeight: 700 }}>
+                    곧 종료되는 행사
+                  </Typography>
+                </Box>
+                <Box sx={{ display: 'flex', gap: 1, overflowX: 'auto', mx: -1.5, px: 1.5 }}>
+                  {todayEndingEvents.map((event) => (
+                    <Box
+                      key={event.id}
+                      onClick={() => navigate(`/events/${event.id}`)}
+                      sx={{
+                        flexShrink: 0,
+                        width: 'min(44vw, 160px)',
+                        p: 1,
+                        bgcolor: 'rgba(255,255,255,0.06)',
+                        borderRadius: 1.5,
+                        cursor: 'pointer',
+                      }}
+                    >
+                      <Typography sx={{ fontSize: '0.78rem', fontWeight: 700, color: '#fff' }} noWrap>
+                        {event.title}
+                      </Typography>
+                      <Typography sx={{ fontSize: '0.65rem', color: 'rgba(255,255,255,0.5)', mt: 0.25 }}>
+                        {new Date(event.end_date).toLocaleDateString('ko-KR')} 종료
+                      </Typography>
+                    </Box>
+                  ))}
+                </Box>
               </Box>
             </Box>
           )}
 
           {/* 이번 주 HOT 행사 */}
           <Box sx={{ mt: 3 }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
-              <WhatshotIcon sx={{ color: 'primary.main', mr: 0.5 }} />
-              <Typography variant="h3" sx={{ color: '#fff', fontWeight: 800 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', px: 2, mb: 1.5 }}>
+              <WhatshotIcon sx={{ color: 'primary.main', mr: 0.75, fontSize: '1.2rem' }} />
+              <Typography sx={{ color: '#fff', fontWeight: 800, fontSize: '1rem' }}>
                 이번 주 HOT 행사
               </Typography>
             </Box>
-            <Box sx={{ display: 'flex', gap: 1.5, overflowX: 'auto', '&::-webkit-scrollbar': { display: 'none' } }}>
-              {hotEvents.map((event) => (
-                <Box key={event.id} sx={{ flexShrink: 0, width: 140 }}>
+            {/* 첫 카드를 크게, 나머지는 가로 스크롤 */}
+            <Box sx={{ display: 'flex', gap: 1.5, overflowX: 'auto', px: 2, pb: 0.5 }}>
+              {hotEvents.map((event, idx) => (
+                <Box
+                  key={event.id}
+                  sx={{ flexShrink: 0, width: idx === 0 ? 'min(52vw, 200px)' : 'min(38vw, 148px)' }}
+                >
                   <EventCard event={event} />
                 </Box>
               ))}
@@ -190,18 +191,19 @@ function HomePage() {
           </Box>
 
           {/* 최신 행사 */}
-          <Box sx={{ mt: 3 }}>
+          <Box sx={{ mt: 3, px: 2 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1.5 }}>
-              <Typography variant="h3" sx={{ color: '#fff', fontWeight: 800 }}>
+              <Typography sx={{ color: '#fff', fontWeight: 800, fontSize: '1rem' }}>
                 최신 행사
               </Typography>
-              <Typography
-                variant="caption"
-                sx={{ color: 'primary.main', cursor: 'pointer', fontWeight: 600 }}
+              <Box
                 onClick={() => navigate('/events')}
+                sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer', minHeight: 44, px: 1 }}
               >
-                전체보기
-              </Typography>
+                <Typography sx={{ color: 'primary.main', fontWeight: 600, fontSize: '0.8rem' }}>
+                  전체보기
+                </Typography>
+              </Box>
             </Box>
             <Grid container spacing={1.5}>
               {latestEvents.map((event) => (
@@ -221,8 +223,8 @@ function HomePage() {
         onClick={() => navigate('/events/create')}
         sx={{
           position: 'fixed',
-          bottom: 80,
-          right: 16,
+          bottom: 'calc(72px + env(safe-area-inset-bottom))',
+          right: 'calc(50% - min(240px, 50vw) + 16px)',
           width: 52,
           height: 52,
           borderRadius: '50%',
@@ -231,12 +233,13 @@ function HomePage() {
           alignItems: 'center',
           justifyContent: 'center',
           cursor: 'pointer',
-          boxShadow: '0 4px 20px rgba(232,64,64,0.5)',
+          boxShadow: '0 4px 24px rgba(232,64,64,0.45)',
           zIndex: 999,
-          '&:active': { transform: 'scale(0.95)' },
+          '&:active': { transform: 'scale(0.93)' },
+          transition: 'transform 0.1s',
         }}
       >
-        <Typography sx={{ color: '#fff', fontSize: '1.5rem', lineHeight: 1, fontWeight: 300 }}>+</Typography>
+        <Typography sx={{ color: '#fff', fontSize: '1.6rem', lineHeight: 1, fontWeight: 300 }}>+</Typography>
       </Box>
     </Box>
   );

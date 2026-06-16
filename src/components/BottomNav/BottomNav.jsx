@@ -25,7 +25,16 @@ function BottomNav() {
 
   return (
     <Paper
-      sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 1000 }}
+      sx={{
+        position: 'fixed',
+        bottom: 0,
+        left: '50%',
+        transform: 'translateX(-50%)',
+        width: '100%',
+        maxWidth: 480,
+        zIndex: 1000,
+        pb: 'env(safe-area-inset-bottom)',
+      }}
       elevation={0}
     >
       <BottomNavigation

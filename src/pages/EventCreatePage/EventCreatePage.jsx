@@ -50,15 +50,15 @@ function EventCreatePage() {
   };
 
   return (
-    <Box sx={{ bgcolor: 'background.default', minHeight: '100vh' }}>
+    <Box sx={{ bgcolor: 'background.default', minHeight: '100dvh' }}>
       {/* 헤더 */}
-      <Box sx={{ px: 2, pt: 2, pb: 1, display: 'flex', alignItems: 'center', gap: 1, borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-        <IconButton onClick={() => step === 0 ? navigate(-1) : setStep(s => s - 1)} sx={{ color: 'text.secondary', p: 0.5 }}>
+      <Box sx={{ px: 1, pt: 'max(env(safe-area-inset-top), 8px)', pb: 1, display: 'flex', alignItems: 'center', gap: 0.5, borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+        <IconButton onClick={() => step === 0 ? navigate(-1) : setStep(s => s - 1)} sx={{ color: 'rgba(255,255,255,0.7)', minWidth: 44, minHeight: 44 }}>
           <ArrowBackIcon />
         </IconButton>
         <Box>
-          <Typography variant="h4" sx={{ color: '#fff', fontWeight: 800 }}>행사 등록</Typography>
-          <Typography variant="caption" sx={{ color: 'primary.main' }}>STEP {step + 1}/{STEPS.length} — {STEPS[step]}</Typography>
+          <Typography sx={{ color: '#fff', fontWeight: 800, fontSize: '1rem' }}>행사 등록</Typography>
+          <Typography sx={{ color: 'primary.main', fontSize: '0.75rem' }}>STEP {step + 1}/{STEPS.length} — {STEPS[step]}</Typography>
         </Box>
       </Box>
 
