@@ -163,7 +163,7 @@ function EventDetailPage() {
         </Box>
       </Box>
 
-      <Box sx={{ px: 2, mt: -1.5 }}>
+      <Box sx={{ px: 2, pt: 2 }}>
         {/* 카테고리 + 상태 */}
         <Box sx={{ display: 'flex', gap: 0.75, mb: 1, flexWrap: 'wrap' }}>
           <Chip label={event.category} size="small" sx={{ bgcolor: categoryColors[event.category] || '#E84040', color: '#fff', fontWeight: 700, borderRadius: 1, fontSize: '0.72rem', height: 24 }} />
