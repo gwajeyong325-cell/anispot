@@ -5,7 +5,11 @@ import {
   Tabs, Tab, Alert, CircularProgress,
 } from '@mui/material';
 import GoogleIcon from '@mui/icons-material/Google';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { supabase } from '../../supabase';
+
+const DEMO_EMAIL = 'demo@anispot.kr';
+const DEMO_PASSWORD = 'demo1234!';
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -44,6 +48,17 @@ function LoginPage() {
       provider: 'google',
       options: { redirectTo: window.location.origin + '/anispot/' },
     });
+  };
+
+  const handleDemo = async () => {
+    setLoading(true); setError('');
+    const { error } = await supabase.auth.signInWithPassword({
+      email: DEMO_EMAIL,
+      password: DEMO_PASSWORD,
+    });
+    if (error) setError('데모 로그인에 실패했습니다. 잠시 후 다시 시도해주세요.');
+    else navigate('/');
+    setLoading(false);
   };
 
   return (
@@ -159,7 +174,7 @@ function LoginPage() {
           </Button>
         </Box>
 
-        <Divider sx={{ my: 3, color: 'text.secondary', fontSize: '0.75rem' }}>또는</Divider>
+        <Divider sx={{ my: 2.5, color: 'rgba(255,255,255,0.3)', fontSize: '0.72rem' }}>또는</Divider>
 
         <Button
           variant="outlined"
@@ -175,6 +190,48 @@ function LoginPage() {
         >
           Google로 계속하기
         </Button>
+
+        {/* 데모 체험 */}
+        <Box
+          sx={{
+            mt: 2,
+            p: 2,
+            border: '1px dashed rgba(255,215,61,0.35)',
+            borderRadius: 2,
+            bgcolor: 'rgba(255,215,61,0.04)',
+          }}
+        >
+          <Button
+            variant="contained"
+            fullWidth
+            startIcon={loading ? null : <PlayArrowIcon />}
+            onClick={handleDemo}
+            disabled={loading}
+            sx={{
+              py: 1.4,
+              mb: 1.25,
+              background: 'linear-gradient(135deg, #FFD93D 0%, #F0B800 100%)',
+              color: '#111',
+              fontWeight: 800,
+              fontSize: '0.95rem',
+              '&:hover': { background: 'linear-gradient(135deg, #FFE566 0%, #FFD93D 100%)' },
+              '&.Mui-disabled': { bgcolor: 'rgba(255,215,61,0.3)', color: 'rgba(0,0,0,0.4)' },
+            }}
+          >
+            {loading ? <CircularProgress size={22} sx={{ color: '#111' }} /> : '데모 계정으로 체험하기'}
+          </Button>
+          <Typography
+            sx={{
+              fontSize: '0.72rem',
+              color: 'rgba(255,255,255,0.4)',
+              textAlign: 'center',
+              lineHeight: 1.6,
+            }}
+          >
+            로그인 없이 모든 기능을 체험할 수 있어요.{'\n'}
+            데모 계정의 데이터는 공유되며 초기화될 수 있습니다.
+          </Typography>
+        </Box>
       </Box>
     </Box>
   );
