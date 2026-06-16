@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import {
   Box, Typography, IconButton, Button, Divider,
   TextField, Rating, CircularProgress, Avatar, Chip,
+  Dialog, DialogTitle, DialogContent, DialogActions,
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
@@ -12,6 +13,7 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { supabase } from '../../supabase';
 import { useAuth } from '../../AuthContext';
 import StatusBadge from '../../components/StatusBadge/StatusBadge';
@@ -28,6 +30,8 @@ function EventDetailPage() {
   const [reviewText, setReviewText] = useState('');
   const [rating, setRatingValue] = useState(5);
   const [submitting, setSubmitting] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     fetchAll();
@@ -74,6 +78,14 @@ function EventDetailPage() {
       await supabase.from('anispot_favorites').insert({ user_id: user.id, event_id: id });
     }
     setFavorited(!favorited);
+  };
+
+  const handleDelete = async () => {
+    setDeleting(true);
+    await supabase.from('anispot_events').delete().eq('id', id);
+    setDeleting(false);
+    setDeleteOpen(false);
+    navigate(-1);
   };
 
   const handleShare = () => {
@@ -236,6 +248,27 @@ function EventDetailPage() {
           </Button>
         )}
 
+        {/* 삭제 버튼 — 작성자에게만 표시 */}
+        {user && event.author_id === user.id && (
+          <>
+            <Divider sx={{ my: 2, borderColor: 'rgba(255,255,255,0.08)' }} />
+            <Button
+              variant="outlined"
+              fullWidth
+              startIcon={<DeleteOutlineIcon />}
+              onClick={() => setDeleteOpen(true)}
+              sx={{
+                height: 48,
+                color: '#ff5555',
+                borderColor: 'rgba(255,85,85,0.35)',
+                '&:hover': { borderColor: '#ff5555', bgcolor: 'rgba(255,85,85,0.06)' },
+              }}
+            >
+              행사 삭제
+            </Button>
+          </>
+        )}
+
         {/* 관련 행사 */}
         {related.length > 0 && (
           <>
@@ -311,6 +344,62 @@ function EventDetailPage() {
           </Box>
         )}
       </Box>
+
+      {/* 삭제 확인 다이얼로그 */}
+      <Dialog
+        open={deleteOpen}
+        onClose={() => !deleting && setDeleteOpen(false)}
+        PaperProps={{
+          sx: {
+            bgcolor: '#1E1E1E',
+            border: '1px solid rgba(255,255,255,0.1)',
+            borderRadius: 3,
+            mx: 2,
+            width: '100%',
+          },
+        }}
+      >
+        <DialogTitle sx={{ color: '#fff', fontWeight: 800, pb: 1 }}>
+          행사를 삭제하시겠습니까?
+        </DialogTitle>
+        <DialogContent>
+          <Typography sx={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.9rem', lineHeight: 1.7 }}>
+            <Box component="span" sx={{ color: '#fff', fontWeight: 700 }}>
+              {event.title}
+            </Box>
+            을(를) 삭제하면 복구할 수 없습니다.{'\n'}
+            즐겨찾기, 후기도 모두 함께 삭제됩니다.
+          </Typography>
+        </DialogContent>
+        <DialogActions sx={{ px: 2.5, pb: 2.5, gap: 1 }}>
+          <Button
+            fullWidth
+            variant="outlined"
+            onClick={() => setDeleteOpen(false)}
+            disabled={deleting}
+            sx={{
+              height: 48,
+              color: 'rgba(255,255,255,0.7)',
+              borderColor: 'rgba(255,255,255,0.2)',
+            }}
+          >
+            취소
+          </Button>
+          <Button
+            fullWidth
+            variant="contained"
+            onClick={handleDelete}
+            disabled={deleting}
+            sx={{
+              height: 48,
+              bgcolor: '#E84040',
+              '&:hover': { bgcolor: '#C0392B' },
+            }}
+          >
+            {deleting ? <CircularProgress size={20} color="inherit" /> : '삭제'}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }
