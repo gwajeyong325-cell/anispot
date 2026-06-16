@@ -69,7 +69,6 @@ function LoginPage() {
         display: 'flex',
         flexDirection: 'column',
         position: 'relative',
-        overflow: 'hidden',
       }}
     >
       {/* 배경 포스터 */}
