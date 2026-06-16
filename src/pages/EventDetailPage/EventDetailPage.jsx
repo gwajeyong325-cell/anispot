@@ -35,10 +35,11 @@ function EventDetailPage() {
 
   const fetchAll = async () => {
     setLoading(true);
-    const [{ data: ev }, { data: rv }] = await Promise.all([
+    const [{ data: ev }, { data: rv, error: rvErr }] = await Promise.all([
       supabase.from('anispot_events').select('*').eq('id', id).single(),
       supabase.from('anispot_reviews').select('*, anispot_profiles(display_name, avatar_url)').eq('event_id', id).order('created_at', { ascending: false }),
     ]);
+    if (rvErr) console.error('후기 로딩 에러:', rvErr);
 
     if (ev) {
       setEvent(ev);
@@ -82,13 +83,38 @@ function EventDetailPage() {
   const handleReview = async (e) => {
     e.preventDefault();
     if (!user) { navigate('/login'); return; }
+    if (!reviewText.trim()) return;
     setSubmitting(true);
-    await supabase.from('anispot_reviews').insert({
-      content: reviewText, rating, author_id: user.id, event_id: parseInt(id),
+
+    const { error: insertError } = await supabase.from('anispot_reviews').insert({
+      content: reviewText.trim(),
+      rating,
+      author_id: user.id,
+      event_id: parseInt(id),
     });
-    setReviewText(''); setRatingValue(5);
-    const { data } = await supabase.from('anispot_reviews').select('*, anispot_profiles(display_name, avatar_url)').eq('event_id', id).order('created_at', { ascending: false });
-    setReviews(data || []);
+
+    if (insertError) {
+      console.error('후기 저장 실패:', insertError);
+      setSubmitting(false);
+      return;
+    }
+
+    setReviewText('');
+    setRatingValue(5);
+
+    // 저장 후 목록 재조회
+    const { data, error: fetchError } = await supabase
+      .from('anispot_reviews')
+      .select('*, anispot_profiles(display_name, avatar_url)')
+      .eq('event_id', id)
+      .order('created_at', { ascending: false });
+
+    if (fetchError) {
+      console.error('후기 조회 실패:', fetchError);
+    } else {
+      setReviews(data || []);
+    }
+
     setSubmitting(false);
   };
 
